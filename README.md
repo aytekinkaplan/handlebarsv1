@@ -1,5 +1,3 @@
-Certainly! Here’s a detailed explanation of Handlebars in English, along with various tutorials to enrich your understanding:
-
 ---
 
 ### What is Handlebars?
