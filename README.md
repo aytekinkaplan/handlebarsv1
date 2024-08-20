@@ -111,7 +111,15 @@ Partials allow you to reuse common HTML structures.
 
    - [Handlebars.js Documentation](https://handlebarsjs.com/)
 
-2. **MDN Web Docs**: An overview of JavaScript templating and how Handlebars fits into the broader ecosystem.
+2. **Tutorial by Tuts+**: A beginner-friendly tutorial to get you started with Handlebars.
+
+   - [Tuts+ Handlebars Tutorial](https://code.tutsplus.com/an-introduction-to-handlebars--net-27761t)
+
+3. **FreeCodeCamp Guide**: A hands-on guide for learning Handlebars with practical examples.
+
+   - [FreeCodeCamp Handlebars Guide](https://www.freecodecamp.org/news/javascript-event-handlers//)
+
+4. **MDN Web Docs**: An overview of JavaScript templating and how Handlebars fits into the broader ecosystem.
    - [MDN Templating Overview](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
 
 These resources should help you get a solid grasp of Handlebars and how to use it effectively in your projects.
