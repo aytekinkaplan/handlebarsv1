@@ -111,9 +111,9 @@ Partials allow you to reuse common HTML structures.
 
    - [Handlebars.js Documentation](https://handlebarsjs.com/)
 
-2. **Tutorial by Tuts+**: A beginner-friendly tutorial to get you started with Handlebars.
+2. **Sabe`s Guide**: A beginner-friendly tutorial to get you started with Handlebars.
 
-   - [Tuts+ Handlebars Tutorial](https://sabe.io/tutorials/getting-started-with-handlebars-js)
+   - [Sabe Tutorial](https://sabe.io/tutorials/getting-started-with-handlebars-js)
 
 3. **FreeCodeCamp Guide**: A hands-on guide for learning Handlebars with practical examples.
 
