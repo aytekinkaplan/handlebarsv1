@@ -1,8 +1,13 @@
-### Project Structure and Conversion Steps
+---
+# My Handlebars Site
 
-To convert your Ghost CMS-dependent project into a standalone structure using Handlebars.js and Node.js, we will maintain the principles of Handlebars.js while creating a dynamic content site without relying on Ghost CMS.
+## Introduction
 
-#### Project Structure
+This project is a simple standalone website built with Node.js and Handlebars.js. It was originally based on a Ghost CMS theme but has been adapted to work without a CMS. This guide will walk you through the structure of the project, how to set it up, and how to run it.
+
+## Project Structure
+
+Here's a breakdown of the project's directory structure and the role of each file:
 
 ```
 my-handlebars-site/
@@ -30,207 +35,241 @@ my-handlebars-site/
 └── README.md
 ```
 
-#### Conversion Steps
+### 1. Static Files
 
-1. **Set Up Node.js Environment**:
+**`public/` Directory**
 
-   - Create a new directory for your project (`my-handlebars-site`).
-   - Initialize a Node.js project using `npm init -y`.
-   - Install the necessary dependencies: `express`, `express-handlebars`, `nodemon`, and `body-parser` by running:
-     ```bash
-     npm install express express-handlebars nodemon body-parser
-     ```
+- **`public/css/styles.css`**: Contains the CSS styles for the website. This file ensures that the site has a consistent and appealing design.
 
-2. **Organize Public Assets**:
+```css
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
+}
 
-   - Place your `styles.css` in the `public/css/` directory. This directory will also hold any JavaScript files and images if needed.
+/* Additional CSS rules */
+```
 
-3. **Create Handlebars Views**:
+### 2. Handlebars Templates
 
-   - Move your Handlebars templates into the `views/` directory. You'll need to adjust the file structure slightly:
-     - `default.hbs` becomes `layouts/main.hbs`.
-     - `header.hbs`, `footer.hbs`, and `navigation.hbs` move to the `partials/` directory.
+**`views/` Directory**
 
-4. **Configure Express and Handlebars**:
+- **`views/layouts/main.hbs`**: This is the main layout template. It sets up the basic HTML structure and includes the header, footer, and content area where other templates are rendered.
 
-   - Create an `app.js` file in the root of your project. This will be the entry point for your Node.js application.
-   - Set up the Express server and configure Handlebars as the templating engine:
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}} | My Handlebars Site</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    {{> header}}
+    <main>
+        {{{body}}}
+    </main>
+    {{> footer}}
+</body>
+</html>
+```
 
-     ```javascript
-     const express = require("express");
-     const exphbs = require("express-handlebars");
-     const path = require("path");
+- **`views/partials/header.hbs`**: Contains the HTML for the header section of the site, including the site title and navigation menu.
 
-     const app = express();
+```html
+<header>
+    <h1>{{@site.title}}</h1>
+    {{> navigation}}
+</header>
+```
 
-     // Set static folder
-     app.use(express.static(path.join(__dirname, "public")));
+- **`views/partials/footer.hbs`**: Contains the HTML for the footer section of the site.
 
-     // Set up Handlebars
-     app.engine(
-       "hbs",
-       exphbs({
-         extname: "hbs",
-         defaultLayout: "main",
-         layoutsDir: "views/layouts/",
-         partialsDir: "views/partials/",
-       })
-     );
-     app.set("view engine", "hbs");
+```html
+<footer>
+    <p>© {{@site.title}} {{date "YYYY"}}. All rights reserved.</p>
+</footer>
+```
 
-     // Routes
-     app.use("/", require("./routes/index"));
-     app.use("/posts", require("./routes/posts"));
+- **`views/partials/navigation.hbs`**: Renders the navigation menu based on site navigation data.
 
-     // 404 page
-     app.use((req, res) => {
-       res.status(404).render("404");
-     });
+```html
+<nav>
+    {{#each @site.navigation}}
+        <a href="{{url}}">{{label}}</a>
+    {{/each}}
+</nav>
+```
 
-     const PORT = process.env.PORT || 3000;
-     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-     ```
+- **`views/index.hbs`**: The homepage template that displays a list of posts.
 
-5. **Create Routes**:
+```html
+{{!< main}}
+<h2>Latest Posts</h2>
+{{#each posts}}
+    <article>
+        <h2>{{title}}</h2>
+        <p>{{excerpt}}</p>
+        <p>Published on {{date published_at format="MMMM D, YYYY"}}</p>
+    </article>
+{{else}}
+    <p>No posts found.</p>
+{{/each}}
+```
 
-   - Create the `routes/index.js` and `routes/posts.js` files to manage your application's routes.
+- **`views/post.hbs`**: Displays an individual post with its title, publish date, and content.
 
-     - `index.js` will render the homepage using `index.hbs`.
-     - `posts.js` will handle rendering individual posts using `post.hbs`.
+```html
+{{!< main}}
+<article>
+    <h2>{{title}}</h2>
+    <p>Published on {{date published_at format="MMMM D, YYYY"}}</p>
+    <p>{{{content}}}</p>
+</article>
+```
 
-     Example `index.js`:
+- **`views/404.hbs`**: A template for handling 404 errors when a page is not found.
 
-     ```javascript
-     const express = require("express");
-     const router = express.Router();
+```html
+{{!< main}}
+<h2>Page Not Found</h2>
+<p>Sorry, the page you are looking for does not exist.</p>
+```
 
-     // Homepage
-     router.get("/", (req, res) => {
-       res.render("index", {
-         title: "Latest Posts",
-         posts: [
-           {
-             title: "Post One",
-             excerpt: "This is the excerpt for post one...",
-             published_at: "January 1, 2024",
-           },
-           {
-             title: "Post Two",
-             excerpt: "This is the excerpt for post two...",
-             published_at: "February 1, 2024",
-           },
-         ],
-       });
-     });
+### 3. Routes
 
-     module.exports = router;
-     ```
+**`routes/` Directory**
 
-     Example `posts.js`:
+- **`routes/index.js`**: Defines the route for the homepage. It renders the `index.hbs` template with sample post data.
 
-     ```javascript
-     const express = require("express");
-     const router = express.Router();
+```javascript
+const express = require('express');
+const router = express.Router();
 
-     // Individual Post Page
-     router.get("/:id", (req, res) => {
-       const post = {
-         title: "Post Title",
-         content: "This is the content of the post...",
-         published_at: "January 1, 2024",
-       };
-       res.render("post", post);
-     });
+// Homepage Route
+router.get('/', (req, res) => {
+    res.render('index', {
+        title: 'Latest Posts',
+        posts: [
+            { title: 'Post One', excerpt: 'This is the excerpt for post one...', published_at: new Date('2024-01-01') },
+            { title: 'Post Two', excerpt: 'This is the excerpt for post two...', published_at: new Date('2024-02-01') }
+        ]
+    });
+});
 
-     module.exports = router;
-     ```
+module.exports = router;
+```
 
-6. **Run the Application**:
+- **`routes/posts.js`**: Defines the route for individual posts. It renders the `post.hbs` template with sample post content.
 
-   - Start the application using `nodemon` to auto-reload on changes:
-     ```bash
-     npx nodemon app.js
-     ```
+```javascript
+const express = require('express');
+const router = express.Router();
 
-7. **Push to GitHub**:
-   - After completing the setup, push your project to GitHub.
+// Individual Post Route
+router.get('/:id', (req, res) => {
+    const post = { title: 'Sample Post', content: 'This is the content of the post...', published_at: new Date('2024-01-01') };
+    res.render('post', post);
+});
 
-### README.md Template
+module.exports = router;
+```
 
-````markdown
-# My Handlebars Site
+### 4. Application Setup
 
-A simple standalone website using Node.js and Handlebars.js, originally based on a Ghost CMS theme. This project demonstrates how to use Handlebars.js to create dynamic pages without the need for a CMS.
+**`app.js`**
 
-## Features
+- This file initializes the Express application, sets up the Handlebars engine, and defines the routes.
 
-- Dynamic rendering of pages using Handlebars.js
-- Node.js and Express server setup
-- Organized structure for views, partials, and layouts
-- Responsive design with a custom CSS
+```javascript
+const express = require('express');
+const exphbs = require('express-handlebars');
+const path = require('path');
 
-## Installation
+const app = express();
 
-1. Clone the repository:
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Handlebars Middleware
+app.engine('hbs', exphbs({
+    extname: 'hbs',
+    defaultLayout: 'main',
+    layoutsDir: path.join(__dirname, 'views', 'layouts'),
+    partialsDir: path.join(__dirname, 'views', 'partials')
+}));
+app.set('view engine', 'hbs');
+
+// Routes
+app.use('/', require('./routes/index'));
+app.use('/posts', require('./routes/posts'));
+
+// 404 Route
+app.use((req, res) => {
+    res.status(404).render('404', { title: 'Page Not Found' });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+```
+
+### 5. Package Configuration
+
+**`package.json`**
+
+- This file contains metadata about the project, including dependencies and scripts.
+
+```json
+{
+  "name": "my-handlebars-site",
+  "version": "1.0.0",
+  "description": "A custom website built with Node.js and Handlebars.js",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "Aytekin Kaplan",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^7.0.7",
+    "nodemon": "^3.0.1"
+  }
+}
+```
+
+## Running the Project
+
+1. **Clone the Repository:**
    ```bash
    git clone https://github.com/aytekinkaplan/my-handlebars-site.git
    ```
-````
 
-2. Navigate to the project directory:
+2. **Navigate to the Project Directory:**
    ```bash
    cd my-handlebars-site
    ```
-3. Install dependencies:
+
+3. **Install Dependencies:**
    ```bash
    npm install
    ```
-4. Run the application:
+
+4. **Start the Application:**
    ```bash
    npx nodemon app.js
    ```
-5. Visit `http://localhost:3000` in your browser to view the site.
 
-## Project Structure
-
-- **public/**: Contains static assets like CSS, JavaScript, and images.
-- **views/**: Contains Handlebars templates organized into layouts, partials, and pages.
-- **routes/**: Defines routes for the homepage and posts.
-- **app.js**: Entry point for the Node.js application.
-- **package.json**: Contains project metadata and dependencies.
+5. **Visit the Website:**
+   Open your browser and go to `http://localhost:3000` to view the site.
 
 ## License
 
 This project is licensed under the MIT License.
 
-```
-
-### LinkedIn Article Tutorial
-
-#### Title: Creating a Standalone Handlebars.js Site Without Ghost CMS
-
-#### Introduction:
-In this tutorial, I'll guide you through converting a Ghost CMS-based theme into a standalone website using Node.js and Handlebars.js. You'll learn how to set up a simple, dynamic site that doesn't rely on any CMS, making it lightweight and easily customizable.
-
-#### Step 1: Set Up the Node.js Environment
-[Provide a detailed step-by-step guide for setting up Node.js, installing dependencies, and organizing the project structure.]
-
-#### Step 2: Configure Handlebars.js in Express
-[Explain how to set up Express and Handlebars.js, including creating layouts, partials, and templates.]
-
-#### Step 3: Create Dynamic Routes
-[Walk through creating routes for rendering the homepage and individual posts dynamically.]
-
-#### Step 4: Launch the Application
-[Show how to run the application using nodemon and test it locally.]
-
-#### Step 5: Deploy and Share
-[Guide on pushing the project to GitHub and sharing it.]
-
-#### Conclusion:
-By following these steps, you've successfully transformed a Ghost CMS theme into a fully functional standalone site using Handlebars.js and Node.js. This setup is perfect for lightweight projects where a full CMS isn't necessary.
-
 ---
-
-This tutorial format will provide a comprehensive guide for anyone looking to replicate your project or learn from it.
-```
