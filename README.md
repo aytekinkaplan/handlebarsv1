@@ -113,7 +113,7 @@ Partials allow you to reuse common HTML structures.
 
 2. **Tutorial by Tuts+**: A beginner-friendly tutorial to get you started with Handlebars.
 
-   - [Tuts+ Handlebars Tutorial](https://code.tutsplus.com/an-introduction-to-handlebars--net-27761t)
+   - [Tuts+ Handlebars Tutorial](https://sabe.io/tutorials/getting-started-with-handlebars-js)
 
 3. **FreeCodeCamp Guide**: A hands-on guide for learning Handlebars with practical examples.
 
