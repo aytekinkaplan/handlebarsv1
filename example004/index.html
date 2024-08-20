@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Handlebars Example</title>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script>
+      const template = Handlebars.compile(`
+        <h1>{{person.name}}</h1>
+        <p>Age: {{person.age}}</p>
+        <h2>Hobbies</h2>
+        <ul>
+          {{#each person.hobbies}}
+            <li>{{this}}</li>
+          {{/each}}
+        </ul>
+      `);
+      const data = {
+        person: {
+          name: "Aytekin",
+          age: 30,
+          hobbies: ["Reading", "Coding", "Hiking"],
+        },
+      };
+      document.body.innerHTML = template(data);
+    </script>
+  </body>
+</html>
