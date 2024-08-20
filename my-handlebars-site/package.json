@@ -1,0 +1,10 @@
+{
+  "name": "my-ghost-theme",
+  "version": "1.0.0",
+  "description": "A custom Ghost theme",
+  "author": "Aytekin Kaplan",
+  "engines": {
+    "ghost-api": "v5"
+  },
+  "license": "MIT"
+}

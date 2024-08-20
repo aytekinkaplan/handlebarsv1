@@ -1,0 +1,13 @@
+{{!< default}}
+
+<h1>Latest Posts</h1>
+
+{{#foreach posts}}
+  <article>
+    <h2><a href="{{url}}">{{title}}</a></h2>
+    <p>{{excerpt}}</p>
+    <small>Published on {{date published_at format="MMMM D, YYYY"}}</small>
+  </article>
+{{else}}
+  <p>No posts found.</p>
+{{/foreach}}
