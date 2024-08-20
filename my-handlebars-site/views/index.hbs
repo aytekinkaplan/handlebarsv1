@@ -1,0 +1,11 @@
+{{!< main}}
+<h2>Latest Posts</h2>
+{{#each posts}}
+  <article>
+    <h2>{{title}}</h2>
+    <p>{{excerpt}}</p>
+    <p>Published on {{date published_at format="MMMM D, YYYY"}}</p>
+  </article>
+{{else}}
+  <p>No posts found.</p>
+{{/each}}
