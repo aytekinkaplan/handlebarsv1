@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Handlebars Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  </head>
+  <body>
+    <div id="content"></div>
+
+    <script id="template" type="text/x-handlebars-template">
+      <h1>{{@site.title}}</h1>
+    </script>
+
+    <script>
+      // Global site info
+      const siteInfo = {
+        site: {
+          title: "Benim Özel Web Sitem",
+        },
+      };
+
+      // Handlebars template
+      const source = document.getElementById("template").innerHTML;
+      const template = Handlebars.compile(source);
+
+      // Template rendering
+      const result = template(siteInfo);
+
+      // Insert the rendered HTML into the DOM
+      document.getElementById("content").innerHTML = result;
+    </script>
+  </body>
+</html>

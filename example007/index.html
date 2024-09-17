@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- Burayı boş bırakıyoruz çünkü JavaScript ile içeriği dolduracağız -->
+
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+    <script>
+      // Handlebars şablonunu JavaScript içinde tanımlıyoruz
+      const template = Handlebars.compile(`
+        <p>Hello, {{name}} {{surname}}</p>
+        {{#if isAdmin}}
+          <p>Welcome, Admin!</p>
+        {{else}}
+          <p>Welcome, User!</p>
+        {{/if}}
+      `);
+
+      // Veriyi sağlıyoruz
+      var data = { name: "Sameer", surname: "Memon", isAdmin: true };
+
+      // Şablonu işle ve sonucu body'ye ekle
+      document.body.innerHTML = template(data);
+    </script>
+  </body>
+</html>
